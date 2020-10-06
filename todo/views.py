@@ -12,9 +12,14 @@ from todo.error_handlers import InvalidUsage
 
 @app.before_request
 def before_request_func():
+    # return os.environ.get("HOSTNAME")
     if os.environ.get("call_downstream", False) == "1":
         downstream = os.environ.get("downstream", "http://todo-downstream:5000")
-        return requests.get(downstream).content
+        verb = request.method
+        url = downstream + request.path
+        response = requests.request(verb, url=url, headers=request.headers, data=request.data)
+        return response.content
+        # return requests.get(downstream).content
 
 @app.route("/", methods=["GET", "POST", "DELETE"])
 def index():
@@ -72,14 +77,18 @@ def handle_invalid_usage(error):
     response.status_code = error.status_code
     return response
 
+def entry_url(id):
+    hostname = os.environ.get("HOSTNAME") 
+    return f"http://{hostname}/{id}"
+
 def construct_dict(entry):
     if entry.order:
         return dict(title=entry.title, completed=entry.completed,
-            url=url_for("entry", entry_id=entry.id, _external=True),
+            url=entry_url(entry.id),
             order=entry.order)
     else:
         return dict(title=entry.title, completed=entry.completed,
-            url=url_for("entry", entry_id=entry.id, _external=True))
+            url=entry_url(entry.id))
 
 
 @app.teardown_appcontext

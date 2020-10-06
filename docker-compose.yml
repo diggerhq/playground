@@ -14,7 +14,8 @@ services:
       call_downstream: 1
       downstream: "http://todo-downstream:5000"
     env_file:
-      env/.postgres
+      - env/.env
+      - env/.postgres
     depends_on:
       - db
     ports:
