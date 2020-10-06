@@ -4,4 +4,4 @@ from todo.database import init_db
 
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True, threaded=True)
+    app.run(host="0.0.0.0", debug=True, threaded=True)

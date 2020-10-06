@@ -1,3 +1,5 @@
+import os
+import requests
 from todo import app
 
 from flask import jsonify, request, url_for
@@ -6,6 +8,13 @@ from flask import json
 from todo.database import db_session
 from todo.models import Entry
 from todo.error_handlers import InvalidUsage
+
+
+@app.before_request
+def before_request_func():
+    if os.environ.get("call_downstream", False) == "1":
+        downstream = os.environ.get("downstream", "http://todo-downstream:5000")
+        return requests.get(downstream).content
 
 @app.route("/", methods=["GET", "POST", "DELETE"])
 def index():

@@ -7,7 +7,8 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
+env/*
+!env/*.example
 build/
 develop-eggs/
 dist/
@@ -61,3 +62,7 @@ virtualenv/
 
 # debug database
 debug.db
+
+
+Pipfile*
+postgres-data/
