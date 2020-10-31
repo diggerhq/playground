@@ -6,4 +6,5 @@ WORKDIR code
 COPY requirements.txt /tmp
 RUN pip install -r /tmp/requirements.txt
 COPY start.sh /tmp/start.sh
+EXPOSE 8080
 ENTRYPOINT bash /tmp/start.sh

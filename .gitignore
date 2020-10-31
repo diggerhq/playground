@@ -66,3 +66,5 @@ debug.db
 
 Pipfile*
 postgres-data/
+.DS_Store
+
